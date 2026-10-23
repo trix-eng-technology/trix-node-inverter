@@ -1,4 +1,4 @@
-TRIX Deye Gateway Firmware - Binary License
+TRIX Node Inverter (TN-INV) Firmware - Binary License
 
 Copyright (c) 2026 Trix Engineering and Technology Co., Ltd. ("TRIX"),
 https://trix.technology. All rights reserved.
@@ -7,7 +7,7 @@ The firmware binaries published in this repository and its releases
 ("the Firmware") are licensed, not sold.
 
 1. Permitted use. You may download, install and run the Firmware only on
-   gateway hardware supplied by TRIX or by an installer authorized by TRIX,
+   TRIX Node hardware supplied by TRIX or by an installer authorized by TRIX,
    for the purpose of monitoring and operating the connected inverter.
 
 2. Restrictions. You may not, and may not allow others to:

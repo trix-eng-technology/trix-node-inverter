@@ -1,19 +1,23 @@
-# TRIX Deye Gateway
+# TRIX Node Inverter (TN-INV)
 
-Official firmware releases for the **TRIX Deye Gateway**, the inverter monitoring gateway made by Trix Engineering and Technology Co., Ltd.
+Official firmware releases for the **TRIX Node Inverter**, model **TN-INV**, the inverter monitoring node in the TRIX Node family by Trix Engineering and Technology Co., Ltd.
 
-The gateway connects to a Deye hybrid inverter over RS485 (Modbus RTU) and reports live data to the [TRIX monitoring platform](https://trix.technology) over encrypted MQTT. Firmware updates are delivered automatically through TRIX.
+The node connects to a Deye hybrid inverter over RS485 (Modbus RTU) and reports live data to the [TRIX monitoring platform](https://trix.technology) over encrypted MQTT. Firmware updates are delivered automatically through TRIX.
 
 This repository publishes signed, ready-to-install firmware and its documentation. Source code is not published. Download files from [Releases](../../releases).
 
 ## Overview
 
+Other members of the TRIX Node family (climate, weather, metering and control) are published in their own `trix-node-*` repositories.
+
 | | |
 |---|---|
-| Product | TRIX Deye Gateway |
-| Device type in TRIX | `deye-gateway` |
+| Product | TRIX Node Inverter |
+| Model | TN-INV |
+| Family | TRIX Node (protocol `trix-node/1`) |
+| Device type in TRIX | `deye-gateway` (internal id, unchanged for update compatibility) |
 | Current release | see [Releases](../../releases/latest) |
-| Hardware | TRIX gateway board, ESP32-S3-WROOM-1U, 8 MB flash or more |
+| Hardware | TRIX Node board, ESP32-S3-WROOM-1U, 8 MB flash or more |
 | Connectivity | WiFi, MQTT over TLS (port 8883) |
 | Updates | Over the air through TRIX, Ed25519 signed |
 
@@ -36,7 +40,7 @@ This repository publishes signed, ready-to-install firmware and its documentatio
 | RS485 transceiver | 3.3 V (MAX3485 / SP3485) |
 | Reset button | BOOT (GPIO 0), hold 5 seconds while running |
 
-The RS485 pins are fixed in firmware to match the TRIX board.
+The RS485 pins are fixed in firmware to match the TRIX Node board.
 
 ## Inverter compatibility
 
@@ -78,7 +82,7 @@ All later updates are delivered over the air.
 
 ### 2. Commission on site
 
-1. Power the gateway. It opens a WiFi network named `trix-setup-xxxxxx`.
+1. Power the node. It opens a WiFi network named `trix-setup-xxxxxx`.
 2. Join it with a phone and open http://192.168.4.1 (the page usually opens by itself).
 3. Enter:
    - the site's WiFi name and password
@@ -86,17 +90,17 @@ All later updates are delivered over the air.
    - the TRIX provisioning URL, copied from the QR code or link on the site's portal page in TRIX:
      `https://trix.technology/api/portal/<token>/config.json`
    - leave the manual broker section empty
-4. Press **Save and reboot**. The gateway joins WiFi, fetches its settings from TRIX and starts reporting.
+4. Press **Save and reboot**. The node joins WiFi, fetches its settings from TRIX and starts reporting.
 
-The setup page stays open for 10 minutes. If the gateway cannot join WiFi within 5 minutes of booting, it reopens the setup page by itself.
+The setup page stays open for 10 minutes. If the node cannot join WiFi within 5 minutes of booting, it reopens the setup page by itself.
 
 ### 3. Local web page
 
-Open `http://<gateway IP>/` from the same network. The first visit asks for a web password. Writing inverter settings, restoring a backup and uploading firmware also require a separate admin password.
+Open `http://<node IP>/` from the same network. The first visit asks for a web password. Writing inverter settings, restoring a backup and uploading firmware also require a separate admin password.
 
 ## Updates
 
-Installed gateways check TRIX for updates after boot and every 6 hours, and on request from TRIX. An update is installed only if it is signed by TRIX, matches the device type and is newer than the running version. See [CHANGELOG](CHANGELOG.md) for release history.
+Installed nodes check TRIX for updates after boot and every 6 hours, and on request from TRIX. An update is installed only if it is signed by TRIX, matches the device type and is newer than the running version. See [CHANGELOG](CHANGELOG.md) for release history.
 
 ## Security
 
@@ -114,7 +118,7 @@ Writing settings to an inverter changes how an electrical installation operates.
 
 ## License and trademarks
 
-The firmware is proprietary and licensed for use on TRIX gateway hardware only. See [LICENSE](LICENSE).
+The firmware is proprietary and licensed for use on TRIX Node hardware only. See [LICENSE](LICENSE).
 
 Deye is a trademark of its respective owner. TRIX is not affiliated with or endorsed by Deye.
 
