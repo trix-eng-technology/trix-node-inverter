@@ -1,0 +1,39 @@
+TRIX Deye Gateway Firmware - Binary License
+
+Copyright (c) 2026 TRIX (https://trix.technology). All rights reserved.
+
+The firmware binaries published in this repository and its releases
+("the Firmware") are licensed, not sold.
+
+1. Permitted use. You may download, install and run the Firmware only on
+   gateway hardware supplied by TRIX or by an installer authorized by TRIX,
+   for the purpose of monitoring and operating the connected inverter.
+
+2. Restrictions. You may not, and may not allow others to:
+   a. decompile, disassemble or otherwise reverse engineer the Firmware,
+      except to the extent applicable law expressly permits it;
+   b. modify the Firmware or create derivative works from it;
+   c. redistribute, sell, rent, sublicense or publish the Firmware, other
+      than by linking to this repository;
+   d. remove or alter any copyright or license notice.
+
+3. Updates. The Firmware may update itself from TRIX servers. Each update
+   is covered by this license.
+
+4. Third-party components. The Firmware includes open-source components
+   (Arduino-ESP32 and ESP-IDF, ArduinoJson, PubSubClient,
+   ESPAsyncWebServer, AsyncTCP, Crypto by Rhys Weatherley, mbedTLS) under
+   their own licenses. Those licenses apply to those components only.
+
+5. No warranty. THE FIRMWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
+   KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
+   Writing settings to an inverter changes how an electrical installation
+   operates; this must be done by a qualified person.
+
+6. Limitation of liability. IN NO EVENT SHALL TRIX BE LIABLE FOR ANY CLAIM,
+   DAMAGES OR OTHER LIABILITY ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+   FIRMWARE OR ITS USE, TO THE EXTENT PERMITTED BY APPLICABLE LAW.
+
+7. Termination. This license ends automatically if you break its terms.
+   You must then stop using and delete the Firmware.
