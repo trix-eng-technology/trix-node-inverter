@@ -1,12 +1,23 @@
 # Changelog
 
-## 3.0.3 (2026-10-23)
+All notable changes to the TRIX Deye Gateway firmware are listed here.
+Versions follow [Semantic Versioning](https://semver.org).
 
-รุ่น production แรกบนบอร์ด TRIX ESP32-S3
+## [3.0.3] - 2026-10-23
 
-- ขา RS485 ล็อกตามบอร์ด: RX 17, TX 18, DE/RE 16
-- MQTT over TLS ตรวจใบรับรอง broker (TrixNode 1.2.0)
-- คำสั่ง `reprovision` ย้ายเครื่องไป broker ที่ TRIX แจกตอนนี้จากระยะไกล ต่อไม่ได้ใน 5 นาทีกลับค่าเดิมเอง
-- OTA ผ่าน TRIX พร้อมลายเซ็น Ed25519
-- หน้าเว็บใหม่: power flow รูปบ้าน, การ์ดพลังงานรายวัน
-- แก้ตาราง partition (บูตวนบนบอร์ดใหม่) และ audit log ที่ไม่เคยทำงาน
+First production release for the TRIX ESP32-S3 gateway board.
+
+### Added
+- MQTT over TLS (port 8883) with broker certificate verification.
+- Remote `reprovision` command: moves a gateway to the broker TRIX currently assigns, and returns to the previous broker by itself if the new one is unreachable for 5 minutes.
+- Signed over-the-air updates through TRIX (Ed25519).
+- New local web page with a power flow view and daily energy summary.
+
+### Changed
+- RS485 pins fixed to the TRIX board: RX 17, TX 18, DE/RE 16.
+
+### Fixed
+- Flash partition layout that caused new boards to restart in a loop.
+- Audit log storage that was not being mounted.
+
+[3.0.3]: https://github.com/trix-eng-technology/deye-gateway-firmware/releases/tag/v3.0.3
