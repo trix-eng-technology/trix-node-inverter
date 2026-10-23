@@ -1,91 +1,91 @@
 # TRIX Deye Gateway firmware
 
-Firmware สำหรับอุปกรณ์ TRIX Deye Gateway (ESP32-S3) อ่านค่าจากอินเวอร์เตอร์ไฮบริด Deye ผ่าน RS485 Modbus RTU แล้วส่งขึ้นระบบมอนิเตอร์ TRIX (https://trix.technology) ผ่าน MQTT แบบเข้ารหัส TLS
+Firmware for the TRIX Deye Gateway (ESP32-S3). It reads a Deye hybrid inverter over RS485 Modbus RTU and sends the data to the TRIX monitoring platform (https://trix.technology) over MQTT with TLS.
 
-repo นี้มีเฉพาะไฟล์ firmware สำเร็จรูปและเอกสาร ไม่มี source code ดาวน์โหลดไฟล์ได้ที่หน้า [Releases](../../releases)
+This repository holds the ready-to-flash firmware files and documentation only. It contains no source code. Download the files from [Releases](../../releases).
 
-## ความสามารถ
+## Features
 
-- อ่านค่า PV, แบตเตอรี่, grid, load, GEN port และพลังงานสะสม ทุกประมาณ 2 วินาที
-- ส่ง telemetry ขึ้น TRIX ผ่าน MQTT over TLS (พอร์ต 8883) ใช้งานได้จากเครือข่ายใดก็ได้ที่มีอินเทอร์เน็ต
-- ตั้งค่าครั้งแรกแบบ zero-touch: ใส่ WiFi และ provisioning URL จาก TRIX เครื่องดึงค่า broker และรหัสเอง
-- อัปเดต firmware อัตโนมัติผ่าน TRIX (OTA) ตรวจลายเซ็น Ed25519 และ sha256 ก่อนติดตั้ง
-- หน้าเว็บในเครื่อง: dashboard, power flow, ประวัติพลังงาน, ตั้งค่าอินเวอร์เตอร์ (ต้องปลดล็อก admin), audit log
-- MQTT สำรองสำหรับ Home Assistant (auto-discovery) เปิดได้จากหน้าเว็บ
+- Reads PV, battery, grid, load, GEN port and energy counters about every 2 seconds
+- Sends telemetry to TRIX over MQTT over TLS (port 8883), from any network with internet access
+- Zero-touch setup: enter WiFi and the TRIX provisioning URL, and the device fetches its broker and credentials by itself
+- Automatic firmware updates through TRIX (OTA), checked against an Ed25519 signature and sha256 before install
+- Built-in web page: dashboard, power flow, energy history, inverter settings (behind an admin unlock), audit log
+- Optional second MQTT connection for Home Assistant (auto-discovery), enabled from the web page
 
-## ฮาร์ดแวร์ที่รองรับ
+## Supported hardware
 
-| รายการ | ค่า |
+| Item | Value |
 |---|---|
-| บอร์ด | TRIX gateway ESP32-S3-WROOM-1U, flash 8 MB ขึ้นไป |
+| Board | TRIX gateway ESP32-S3-WROOM-1U, 8 MB flash or more |
 | RS485 RX (RO) | GPIO 17 |
 | RS485 TX (DI) | GPIO 18 |
 | RS485 DE/RE | GPIO 16 |
-| โมดูล RS485 | 3.3 V (MAX3485 / SP3485) |
-| ปุ่มล้างค่า | BOOT (GPIO 0) กดค้าง 5 วินาทีขณะเครื่องทำงาน |
+| RS485 module | 3.3 V (MAX3485 / SP3485) |
+| Reset button | BOOT (GPIO 0), hold 5 seconds while running |
 
-ขา RS485 ล็อกไว้ใน firmware ตามบอร์ด เปลี่ยนจากหน้าเว็บไม่ได้
+The RS485 pins are fixed in the firmware to match the board and cannot be changed from the web page.
 
-## อินเวอร์เตอร์ที่รองรับ
+## Supported inverters
 
-| รุ่น | ทดสอบกับเครื่องจริง |
+| Model | Tested on a real unit |
 |---|---|
-| Deye SG04LP1 (เช่น SUN-5K-SG04LP1-EU-SM2) | ใช่ |
-| Deye SG05LP1-EU | ใช่ |
-| Deye SG04LP3, SG05LP3 (3 เฟส) | ยังไม่ทดสอบ (ใช้ register map จากเอกสาร) |
+| Deye SG04LP1 (e.g. SUN-5K-SG04LP1-EU-SM2) | Yes |
+| Deye SG05LP1-EU | Yes |
+| Deye SG04LP3, SG05LP3 (three-phase) | Not yet (register map from documentation) |
 
-ค่าเริ่มต้น Modbus: 9600 8N1, slave id 1 เปลี่ยนได้ในหน้า Modbus
+Modbus defaults: 9600 8N1, slave id 1. Both can be changed on the Modbus page.
 
-## ไฟล์ใน Release
+## Release files
 
-| ไฟล์ | ใช้ทำอะไร |
+| File | Use |
 |---|---|
-| `deye-gateway-<version>-factory.bin` | แฟลชบอร์ดใหม่ครั้งแรกผ่านสาย USB เขียนที่ address `0x0` ไฟล์เดียวจบ |
-| `deye-gateway-<version>-ota.bin` | อัปขึ้น TRIX (`firmwares/new`, device type `deye-gateway`) ให้เครื่องที่ติดตั้งแล้วอัปเดตเอง |
-| `deye-gateway-manifest.json` | สำหรับแฟลชผ่านเบราว์เซอร์ด้วย ESP Web Tools |
-| `SHA256SUMS` | ตรวจว่าไฟล์ที่ดาวน์โหลดมาครบและไม่ถูกแก้ |
+| `deye-gateway-<version>-factory.bin` | First flash of a new board over USB, written at address `0x0`, single file |
+| `deye-gateway-<version>-ota.bin` | Upload to TRIX (`firmwares/new`, device type `deye-gateway`) so installed devices update themselves |
+| `deye-gateway-manifest.json` | For flashing from a browser with ESP Web Tools |
+| `SHA256SUMS` | Checks that the downloaded files are complete and unmodified |
 
-ตรวจไฟล์ก่อนใช้:
+Check the files before use:
 
 ```
 shasum -a 256 -c SHA256SUMS
 ```
 
-## แฟลชบอร์ดใหม่ (ครั้งแรกเท่านั้น)
+## Flashing a new board (first time only)
 
-ต้องมี Python และ esptool (`pip install esptool`) ต่อบอร์ดเข้าคอมพิวเตอร์ด้วยสาย USB แล้วรัน (แทน `<PORT>` ด้วยพอร์ตของบอร์ด เช่น `/dev/cu.usbserial-10` หรือ `COM5`):
+You need Python and esptool (`pip install esptool`). Connect the board with a USB cable and run (replace `<PORT>` with the board's port, e.g. `/dev/cu.usbserial-10` or `COM5`):
 
 ```
 esptool.py --chip esp32s3 --port <PORT> erase_flash
 esptool.py --chip esp32s3 --port <PORT> --baud 460800 write_flash 0x0 deye-gateway-<version>-factory.bin
 ```
 
-หลังจากนี้อัปเดตผ่าน TRIX ได้ตลอด ไม่ต้องใช้สายอีก
+After this, all updates come through TRIX. No cable is needed again.
 
-## ตั้งค่าครั้งแรก
+## First-time setup
 
-1. จ่ายไฟให้บอร์ด เครื่องจะเปิด WiFi ชื่อ `trix-setup-xxxxxx`
-2. ใช้มือถือต่อ WiFi นั้น แล้วเปิด http://192.168.4.1 (ส่วนใหญ่หน้าจะเด้งขึ้นเอง)
-3. กรอก
-   - WiFi SSID และรหัสผ่าน ของสถานที่ติดตั้ง
-   - Device id (มีค่าให้แล้ว เปลี่ยนได้ ใช้ a-z 0-9 และ `-`)
-   - TRIX provisioning URL: คัดลอกจาก QR หรือลิงก์ในหน้า portal ของ site บน TRIX
-     รูปแบบ `https://trix.technology/api/portal/<token>/config.json`
-   - ส่วน manual broker เว้นว่าง
-4. กด Save and reboot เครื่องจะต่อ WiFi ดึงค่าจาก TRIX แล้วเริ่มส่งข้อมูล
+1. Power the board. It opens a WiFi network named `trix-setup-xxxxxx`.
+2. Join that network with a phone and open http://192.168.4.1 (the page usually opens by itself).
+3. Fill in:
+   - WiFi SSID and password of the installation site
+   - Device id (pre-filled, can be changed; use a-z, 0-9 and `-`)
+   - TRIX provisioning URL: copy it from the QR code or link on the site's portal page in TRIX,
+     in the form `https://trix.technology/api/portal/<token>/config.json`
+   - Leave the manual broker section empty
+4. Press Save and reboot. The device joins WiFi, fetches its settings from TRIX and starts sending data.
 
-หน้าตั้งค่าเปิดค้าง 10 นาที ถ้าต่อ WiFi ไม่ได้นาน 5 นาทีหลังบูต เครื่องจะเปิดหน้าตั้งค่าเองอีกครั้ง
+The setup page stays open for 10 minutes. If the device cannot join WiFi for 5 minutes after booting, it opens the setup page again by itself.
 
-## หน้าเว็บในเครื่อง
+## Built-in web page
 
-เปิด `http://<IP ของเครื่อง>/` จากเครือข่ายเดียวกัน ครั้งแรกจะให้ตั้งรหัสผ่านเว็บ การเขียนค่าเข้าอินเวอร์เตอร์ การกู้ค่า และการอัป firmware ต้องตั้งและปลดล็อกรหัส admin แยกอีกชั้น
+Open `http://<device IP>/` from the same network. The first visit asks you to set a web password. Writing settings to the inverter, restoring a backup and uploading firmware need a separate admin password, set and unlocked on top of that.
 
-## ความปลอดภัย
+## Security
 
-- MQTT ใช้ TLS และตรวจใบรับรองของ broker ก่อนส่งรหัส
-- OTA รับเฉพาะ firmware ที่ TRIX เซ็นด้วย Ed25519 type ตรงกับเครื่อง และเวอร์ชันใหม่กว่าเท่านั้น
-- ในตัว firmware ไม่มีรหัส WiFi หรือรหัส MQTT ค่าเหล่านี้เก็บในหน่วยความจำของแต่ละเครื่องตอนตั้งค่า
+- MQTT uses TLS and checks the broker's certificate before sending credentials.
+- OTA accepts only firmware signed by TRIX with Ed25519, of the matching device type and a newer version.
+- The firmware contains no WiFi or MQTT passwords. These are stored in each device's own memory during setup.
 
 ## License
 
-Proprietary ดู [LICENSE](LICENSE) ติดต่อ TRIX ที่ https://trix.technology
+Proprietary, see [LICENSE](LICENSE). Contact TRIX at https://trix.technology
